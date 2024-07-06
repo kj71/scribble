@@ -1,0 +1,22 @@
+.chatbox {
+  height: 400px;
+  width: 500px;
+  border: 1px solid black;
+  display: flex;
+  flex-direction: column;
+}
+.inputbox {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-top: 1px solid black;
+  margin-top: auto;
+  outline: none;
+}
+.chat-item:nth-child(even) {
+  background-color: #f0f0f0;
+}
+
+.chat-item:nth-child(odd) {
+  background-color: #ffffff;
+}
