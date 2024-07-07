@@ -1,5 +1,5 @@
 "use client"
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import "./styles.css"
 
 interface IChatList{
@@ -8,7 +8,7 @@ interface IChatList{
 };
 
 const TEXT = {
-  TypeSomething: "Type Something here",
+  TypeSomething: "Type something here",
 };
 
 export default function ChatBox() {
@@ -17,6 +17,8 @@ export default function ChatBox() {
   const onChangeInput = (e: any) => {
     setInputText(e.target.value);
   };
+  const lastDivRef = useRef<any>();
+  const isLastDivVisible = useRef(false);
   const onSubmitInput = useCallback((e: any) => {
     e.preventDefault();
     if(!e.target.value){
@@ -39,13 +41,32 @@ export default function ChatBox() {
     }
   }, [onSubmitInput]);
 
+  useEffect(() => {
+    if(isLastDivVisible.current) {
+      lastDivRef.current.scrollIntoView();
+    }
+  }, [chatList]);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(([entry]) => {
+      isLastDivVisible.current = entry.isIntersecting;
+    });
+    observer.observe(lastDivRef.current);
+    return () => {
+      observer.disconnect();
+    }
+  }, []);
+
   return (
     <div className="chatbox">
-    {
-      chatList.map((item) => {
-        return <text key={item.id} className="chat-item">{item.text}</text>;
-      })
-    }
+      <div className="chat-list-container">
+        {
+          chatList.map((item) => {
+            return <div key={item.id} className="chat-item">{item.text}</div>;
+          })
+        }
+        <div ref={lastDivRef}/>
+      </div>
       <input 
         type="text"
         className="inputbox"

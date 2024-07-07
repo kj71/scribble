@@ -20,3 +20,10 @@
 .chat-item:nth-child(odd) {
   background-color: #ffffff;
 }
+
+.chat-list-container {
+  display: flex;
+  flex-direction: column;
+  overflow: scroll;
+  overflow-y: auto;
+}
