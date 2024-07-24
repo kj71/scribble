@@ -1,6 +1,7 @@
 "use client"
 import { useCallback, useEffect, useRef, useState } from "react";
 import "./styles.css"
+import { socket } from "../socket";
 
 interface IChatList{
   id: number;
@@ -24,6 +25,7 @@ export default function ChatBox() {
     if(!e.target.value){
       return;
     }
+    socket.emit("chat-message",e.target.value);
     let newId = 0;
     if(chatList.length > 0) {
       newId = chatList[chatList.length - 1].id + 1;
@@ -54,6 +56,23 @@ export default function ChatBox() {
     observer.observe(lastDivRef.current);
     return () => {
       observer.disconnect();
+    }
+  }, []);
+
+  useEffect(() => {
+    socket.connect();
+    return () => {
+      socket.disconnect();
+    }
+  }, []);
+
+  useEffect(() => {
+    const onSocketConnect = () => {
+      console.log(socket.id);
+    };
+    socket.on('connect', onSocketConnect);
+    return () => {
+      socket.off('connect', onSocketConnect);
     }
   }, []);
 
