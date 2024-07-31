@@ -13,6 +13,10 @@
   margin-top: auto;
   outline: none;
 }
+.chat-item {
+  display: flex;
+  flex-direction: row;
+}
 .chat-item:nth-child(even) {
   background-color: #f0f0f0;
 }
@@ -26,4 +30,8 @@
   flex-direction: column;
   overflow: scroll;
   overflow-y: auto;
+}
+
+#sender-name{
+  white-space: pre-wrap;
 }
