@@ -25,8 +25,8 @@ export default function ChatBox() {
   const onChangeInput = (e: any) => {
     setInputText(e.target.value);
   };
-  const lastDivRef = useRef<any>();
-  const isLastDivVisible = useRef(false);
+  const chatBottomRef = useRef<any>();
+  const isChatBottomReached = useRef(false);
   const onSubmitInput = useCallback((e: any) => {
     e.preventDefault();
     if(!e.target.value){
@@ -56,16 +56,16 @@ export default function ChatBox() {
   }, [onSubmitInput]);
 
   useEffect(() => {
-    if(isLastDivVisible.current) {
-      lastDivRef.current.scrollIntoView();
+    if(isChatBottomReached.current) {
+      chatBottomRef.current.scrollIntoView();
     }
   }, [chatList]);
 
   useEffect(() => {
     const observer = new IntersectionObserver(([entry]) => {
-      isLastDivVisible.current = entry.isIntersecting;
+      isChatBottomReached.current = entry.isIntersecting;
     });
-    observer.observe(lastDivRef.current);
+    observer.observe(chatBottomRef.current);
     return () => {
       observer.disconnect();
     }
@@ -92,7 +92,7 @@ export default function ChatBox() {
             );
           })
         }
-        <div ref={lastDivRef}/>
+        <div ref={chatBottomRef}/>
       </div>
       <input 
         type="text"
